@@ -14,19 +14,19 @@ const login = () => {
         <DarkLogo />
       </div>
 
-      <FloatLabel class="mt-5" variant="in">
+      <FloatLabel class="mt-5" variant="on">
         <InputText class="w-full" id="username" />
         <label for="password">Ім'я користувача</label>
       </FloatLabel>
 
-      <FloatLabel variant="in">
+      <FloatLabel variant="on">
         <Password class="w-full" id="password" :feedback="false" toggleMask />
         <label for="password">Пароль</label>
       </FloatLabel>
 
       <div class="flex items-center gap-2">
         <Checkbox id="rememberMe" binary />
-        <label for="rememberMe">Запам'ятати дані</label>
+        <label for="rememberMe">Запам'ятати мене</label>
       </div>
 
       <div class="flex justify-center">
