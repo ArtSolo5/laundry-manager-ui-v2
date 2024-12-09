@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, InputText, Password, FloatLabel, Checkbox } from 'primevue';
+import { Button, InputText, Password, FloatLabel, ToggleSwitch } from 'primevue';
 import DarkLogo from '@/components/icons/DarkLogo.vue';
 
 const login = () => {
@@ -25,7 +25,7 @@ const login = () => {
       </FloatLabel>
 
       <div class="flex items-center gap-2">
-        <Checkbox id="rememberMe" binary />
+        <ToggleSwitch id="rememberMe" />
         <label for="rememberMe">Запам'ятати мене</label>
       </div>
 
