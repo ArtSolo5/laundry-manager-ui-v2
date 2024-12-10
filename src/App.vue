@@ -7,11 +7,17 @@ import TheMenubar from './components/common/TheMenubar.vue';
 <template>
   <TheMenubar />
 
-  <div class="flex">
-    <div class="w-52 h-screen">
+  <main class="flex">
+    <div class="w-52">
       <TheSidebar />
     </div>
 
     <RouterView />
-  </div>
+  </main>
 </template>
+
+<style>
+  main {
+    min-height: calc(100vh - 80px);
+  }
+</style>

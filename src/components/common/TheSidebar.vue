@@ -34,7 +34,7 @@ const items: MenuItem[] = [
 
 <template>
   <aside class="h-full">
-    <TieredMenu :model="items" />
+    <TieredMenu class="border-r border-0 rounded-none" :model="items" />
   </aside>
 </template>
 

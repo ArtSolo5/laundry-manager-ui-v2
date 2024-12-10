@@ -5,9 +5,9 @@ import DarkLogo from '../icons/DarkLogo.vue';
 
 <template>
   <header>
-    <Menubar>
+    <Menubar class="border-b border-0 rounded-none">
       <template #start>
-        <DarkLogo />
+        <DarkLogo class="w-14"/>
     </template>
     </Menubar>
   </header>

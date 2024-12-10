@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <main>
+  <section>
     <h1>Dashboard</h1>
-  </main>
+  </section>
 </template>

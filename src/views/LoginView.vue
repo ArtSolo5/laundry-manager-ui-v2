@@ -8,7 +8,7 @@ const login = () => {
 </script>
 
 <template>
-  <main class="h-screen flex items-center justify-center">
+  <section class="h-screen flex items-center justify-center">
     <form class="flex flex-col w-56 gap-5" @submit.prevent="login()">
       <div class="flex justify-center">
         <DarkLogo />
@@ -33,7 +33,7 @@ const login = () => {
         <Button type="submit" label="Увійти" rounded class="px-5" />
       </div>
     </form>
-  </main>
+  </section>
 </template>
 
 <style>
