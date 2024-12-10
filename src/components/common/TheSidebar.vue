@@ -7,28 +7,28 @@ const items: MenuItem[] = [
   {
     label: 'Головна',
     icon: PrimeIcons.HOME,
-    url: '/'
+    url: '/',
   },
   {
     label: 'Надходження',
     icon: PrimeIcons.PLUS_CIRCLE,
-    url: '/arrivals'
+    url: '/arrivals',
   },
   {
     label: 'Прання',
     icon: PrimeIcons.PLAY,
-    url: '/washes'
+    url: '/washes',
   },
   {
     label: 'Звіт',
     icon: PrimeIcons.FILE,
-    url: '/report'
+    url: '/report',
   },
   {
     label: 'Довідник',
     icon: PrimeIcons.QUESTION_CIRCLE,
-    url: '/handbook'
-  }
+    url: '/handbook',
+  },
 ];
 </script>
 
@@ -40,6 +40,6 @@ const items: MenuItem[] = [
 
 <style>
 aside div {
- height: 100%;
+  height: 100%;
 }
 </style>

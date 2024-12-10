@@ -7,8 +7,8 @@ import DarkLogo from '../icons/DarkLogo.vue';
   <header>
     <Menubar class="border-b border-0 rounded-none">
       <template #start>
-        <DarkLogo class="w-14"/>
-    </template>
+        <DarkLogo class="w-14" />
+      </template>
     </Menubar>
   </header>
 </template>
