@@ -14,6 +14,10 @@ const formData = ref({
 
 onMounted(() => {
   if (auth.isAuth()) window.location.replace('/');
+
+  const storedCreds = auth.loadStoredCreds();
+
+  if (storedCreds) formData.value = storedCreds;
 });
 </script>
 

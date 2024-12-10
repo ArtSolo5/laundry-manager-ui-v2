@@ -56,6 +56,20 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    loadStoredCreds() {
+      const storedCreds = localStorage.getItem('credentials');
+
+      if (storedCreds) {
+        return {
+          username: JSON.parse(storedCreds).username,
+          password: JSON.parse(storedCreds).password,
+          rememberMe: true
+        }
+      }
+
+      return null;
+    },
+
     getCookie(name: string) {
       const matches = document.cookie.match(
         new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)'),
