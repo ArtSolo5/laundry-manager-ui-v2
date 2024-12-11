@@ -25,7 +25,7 @@ onMounted(() => {
   <section class="h-screen w-full flex items-center justify-center">
     <form class="flex flex-col w-56 gap-5" @submit.prevent="auth.login(formData)">
       <div class="flex justify-center">
-        <DarkLogo />
+        <DarkLogo width="120" height="103" />
       </div>
 
       <FloatLabel class="mt-5" variant="on">
