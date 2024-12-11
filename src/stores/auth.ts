@@ -63,8 +63,8 @@ export const useAuthStore = defineStore('auth', {
         return {
           username: JSON.parse(storedCreds).username,
           password: JSON.parse(storedCreds).password,
-          rememberMe: true
-        }
+          rememberMe: true,
+        };
       }
 
       return null;
@@ -75,6 +75,10 @@ export const useAuthStore = defineStore('auth', {
         new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)'),
       );
       return matches ? decodeURIComponent(matches[1]) : undefined;
+    },
+
+    deleteCookie(name: string) {
+      document.cookie = `${name}=`;
     },
   },
 });

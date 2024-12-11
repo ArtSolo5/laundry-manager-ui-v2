@@ -7,6 +7,7 @@ import App from './App.vue';
 import router from './router';
 import { definePreset } from '@primevue/themes';
 import { palette } from '@primevue/themes';
+import { uk } from 'primelocale/uk.json';
 
 const app = createApp(App);
 
@@ -28,6 +29,7 @@ app.use(PrimeVue, {
       },
     },
   },
+  locale: uk,
 });
 
 app.mount('#app');
