@@ -1,12 +1,5 @@
-<script setup lang="ts">
-defineProps({
-  width: Number = 80,
-  height: Number = 63
-});
-</script>
-
 <template>
-  <svg :width="width" :height="height" viewBox="0 0 80 63" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg width="80" height="63" viewBox="0 0 80 63" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clip-path="url(#clip0_4_79)">
       <path
         d="M0.015625 25.5112H0.894413L3.58486 29.5853L6.16201 25.5112H6.99045V33.4561H6.12099V27.0317L3.58486 30.9813H3.45152L0.885555 27.0657V33.4561H0.015625V25.5112Z"
