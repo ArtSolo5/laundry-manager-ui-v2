@@ -1,8 +1,8 @@
-import { convertToSQLDate } from "@/helpers/date.helper";
-import { defineStore } from "pinia";
-import { ref, watch, type Ref } from "vue";
-import { useAuthStore } from "./auth";
-import { useDepArrivalsStore } from "./arrivals/department-arrivals";
+import { convertToSQLDate } from '@/helpers/date.helper';
+import { defineStore } from 'pinia';
+import { ref, watch, type Ref } from 'vue';
+import { useAuthStore } from './auth';
+import { useDepArrivalsStore } from './arrivals/department-arrivals';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -13,35 +13,32 @@ export const useWashDaysStore = defineStore('wash-days', () => {
   const day: Ref<WashDay | null> = ref(null);
   const date: Ref<Date> = ref(new Date());
 
-  const loadWashDay = async (date: Date) => {
-    const response = await fetch(
-      `${apiUrl}/wash-days/date/${convertToSQLDate(date)}`,
-      {
-        headers: {
-          Authorization: `Bearer ${auth.getCookie('access_token')}`,
-        },
+  const loadWashDay = async () => {
+    const response = await fetch(`${apiUrl}/wash-days/date/${convertToSQLDate(date.value)}`, {
+      headers: {
+        Authorization: `Bearer ${auth.getCookie('access_token')}`,
       },
-    )
-  
+    });
+
     if (response.status === 200) {
-      day.value = await response.json()
+      day.value = await response.json();
     }
-  
+
     if (response.status === 401) {
-      auth.deleteCookie('access_token')
-      window.location.replace('/login')
+      auth.deleteCookie('access_token');
+      window.location.replace('/login');
     }
-  }
+  };
 
   watch(date, async () => {
-    await loadWashDay(date.value);
+    await loadWashDay();
     await depArrivals.loadArrivals();
-  })
+  });
 
-  return { day, date, loadWashDay }
+  return { day, date, loadWashDay };
 });
 
 interface WashDay {
-  id: number,
+  id: number;
   date: Date;
 }

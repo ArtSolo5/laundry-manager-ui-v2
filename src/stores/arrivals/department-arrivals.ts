@@ -12,12 +12,11 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
 
   const arrivals: Ref<Arrival[]> = ref([]);
 
-  const createDialogArrival: Ref<boolean> = ref(false);
+  const createDialogVisible: Ref<boolean> = ref(false);
   const updateDialogVisible: Ref<boolean> = ref(false);
-  const selectedArrival: Ref<Arrival | null> = ref(null);
 
-  const createErrors: Ref<string[]> = ref([]);
-  const updateErrors: Ref<string[]> = ref([]);
+  const createValidationErrors: Ref<string[]> = ref([]);
+  const updateValidationErrors: Ref<string[]> = ref([]);
 
   const loadArrivals = async () => {
     const response = await fetch(`${apiUrl}/arrivals/date/${convertToSQLDate(washDays.date)}`, {
@@ -36,23 +35,28 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
     }
   };
 
-  const createArrival = async (payload: NewArrival) => {
+  const createArrival = async (payload: DepArrival) => {
     const response = await fetch(`${apiUrl}/arrivals`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${auth.getCookie('access_token')}`,
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        department_id: Number(payload.department_id),
+        day_id: Number(washDays.day?.id),
+        weight: +payload.weight,
+      }),
     });
 
     if (response.status === 201) {
       await loadArrivals();
-      createDialogArrival.value = false;
+      createValidationErrors.value = [];
     }
 
     if (response.status === 400) {
-      createErrors.value = (await response.json()).message;
+      createValidationErrors.value = (await response.json()).message;
+      throw new Error('Validation error');
     }
 
     if (response.status === 401) {
@@ -60,34 +64,31 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
       window.location.replace('/login');
     }
 
-    if (response.status === 403) {
-      createErrors.value = ['Відсутні дозволи на виконання операції'];
-    }
+    if (response.status === 403) throw new Error('Auth error');
   };
 
-  const updateArrival = async () => {
-    if (!selectedArrival.value) return;
-
-    const response = await fetch(`${apiUrl}/arrivals/${selectedArrival.value.id}`, {
+  const updateArrival = async (payload: DepArrival) => {
+    const response = await fetch(`${apiUrl}/arrivals/${payload.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${auth.getCookie('access_token')}`,
       },
       body: JSON.stringify({
-        day_id: +selectedArrival.value.day_id,
-        department_id: +selectedArrival.value.department_id,
-        weight: +selectedArrival.value.weight,
+        department_id: Number(payload.department_id),
+        day_id: Number(washDays.day?.id),
+        weight: +payload.weight,
       }),
     });
 
     if (response.status === 200) {
       await loadArrivals();
-      toggleUpdateDialog();
+      updateValidationErrors.value = [];
     }
 
     if (response.status === 400) {
-      updateErrors.value = (await response.json()).message;
+      updateValidationErrors.value = (await response.json()).message;
+      throw new Error('Validation error');
     }
 
     if (response.status === 401) {
@@ -95,20 +96,7 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
       window.location.replace('/login');
     }
 
-    if (response.status === 403) {
-      updateErrors.value = ['Відсутні дозволи на виконання операції'];
-    }
-  };
-
-  const toggleUpdateDialog = (id: number | null = null) => {
-    updateDialogVisible.value = !updateDialogVisible.value;
-    
-    if (updateDialogVisible.value) {
-      const arrival = arrivals.value.find((a) => a.id === id);
-      if (arrival) selectedArrival.value = arrival;
-    }
-
-    updateErrors.value = [];
+    if (response.status === 403) throw new Error('Auth error');
   };
 
   const sumWeight = computed(() => {
@@ -118,7 +106,7 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
       s += +a.weight;
     });
 
-    return s;
+    return String(s);
   });
 
   const percentage = computed(() => {
@@ -128,20 +116,20 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
       s += a.perc;
     });
 
-    return s > 0 ? 100 : 0;
+    return String(s > 0 ? 100 : 0);
   });
 
   return {
     arrivals,
     loadArrivals,
-    toggleUpdateDialog,
     updateDialogVisible,
-    selectedArrival,
+    createDialogVisible,
     sumWeight,
     percentage,
     updateArrival,
-    createErrors,
-    updateErrors
+    createValidationErrors,
+    updateValidationErrors,
+    createArrival,
   };
 });
 
@@ -155,11 +143,11 @@ interface Arrival {
   day_id: number;
   department_id: number;
   perc: number;
-  weight: number;
+  weight: string;
 }
 
-interface NewArrival {
-  day_id: number;
-  department_id: number;
-  weight: number;
+export interface DepArrival {
+  id?: number;
+  department_id: number | null;
+  weight: string;
 }
