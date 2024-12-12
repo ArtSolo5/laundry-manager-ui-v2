@@ -1,14 +1,15 @@
 import { convertToSQLDate } from '@/helpers/date.helper';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { useAuthStore } from '../auth';
-import { computed, ref, watch, type Ref } from 'vue';
+import { computed, ref, type Ref } from 'vue';
+import { useWashDaysStore } from '../wash-days';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useDepArrivalsStore = defineStore('department-arrivals', () => {
   const auth = useAuthStore();
+  const washDays = useWashDaysStore();
 
-  const date: Ref<Date> = ref(new Date());
   const arrivals: Ref<Arrival[]> = ref([]);
 
   const createDialogArrival: Ref<boolean> = ref(false);
@@ -19,7 +20,7 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
   const updateErrors: Ref<string[]> = ref([]);
 
   const loadArrivals = async () => {
-    const response = await fetch(`${apiUrl}/arrivals/date/${convertToSQLDate(date.value)}`, {
+    const response = await fetch(`${apiUrl}/arrivals/date/${convertToSQLDate(washDays.date)}`, {
       headers: {
         Authorization: `Bearer ${auth.getCookie('access_token')}`,
       },
@@ -82,7 +83,7 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
 
     if (response.status === 200) {
       await loadArrivals();
-      updateDialogVisible.value = false;
+      toggleUpdateDialog();
     }
 
     if (response.status === 400) {
@@ -99,19 +100,22 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
     }
   };
 
-  const openUpdateDialog = (id: number | null = null) => {
-    const arrival = arrivals.value.find((a) => a.id === id);
+  const toggleUpdateDialog = (id: number | null = null) => {
+    updateDialogVisible.value = !updateDialogVisible.value;
+    
+    if (updateDialogVisible.value) {
+      const arrival = arrivals.value.find((a) => a.id === id);
+      if (arrival) selectedArrival.value = arrival;
+    }
 
-    if (arrival) selectedArrival.value = arrival;
-
-    updateDialogVisible.value = true;
+    updateErrors.value = [];
   };
 
   const sumWeight = computed(() => {
     let s = 0;
 
     arrivals.value.forEach((a) => {
-      s += Number(a.weight);
+      s += +a.weight;
     });
 
     return s;
@@ -127,15 +131,10 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
     return s > 0 ? 100 : 0;
   });
 
-  watch(date, async () => {
-    await loadArrivals();
-  });
-
   return {
-    date,
     arrivals,
     loadArrivals,
-    openUpdateDialog,
+    toggleUpdateDialog,
     updateDialogVisible,
     selectedArrival,
     sumWeight,

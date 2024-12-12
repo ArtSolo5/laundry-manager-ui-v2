@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import DatePicker from 'primevue/datepicker';
 import { useDepArrivalsStore } from '@/stores/arrivals/department-arrivals';
+import { useWashDaysStore } from '@/stores/wash-days';
 import { onMounted } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -12,6 +13,7 @@ import ColumnGroup from 'primevue/columngroup';
 import Message from 'primevue/message';
 
 const store = useDepArrivalsStore();
+const washDaysStore = useWashDaysStore();
 
 onMounted(async () => {
   await store.loadArrivals();
@@ -24,7 +26,7 @@ onMounted(async () => {
 
     <DatePicker
       class="mt-5 w-44"
-      v-model="store.date"
+      v-model="washDaysStore.date"
       dateFormat="dd.mm.yy"
       showIcon
       fluid
@@ -49,25 +51,25 @@ onMounted(async () => {
         <template #body="{ data }">
           <Button
             icon="pi pi-pen-to-square"
-            @click="store.openUpdateDialog(data.id)"
+            @click="store.toggleUpdateDialog(data.id)"
             severity="success"
             rounded
           ></Button>
         </template>
       </Column>
-      <ColumnGroup type="footer">
+      <!-- <ColumnGroup type="footer">
         <Row>
           <Column footer="Всого" />
           <Column :footer="store.sumWeight" />
           <Column :footer="store.percentage" :colspan="2" />
         </Row>
-      </ColumnGroup>
+      </ColumnGroup> -->
     </DataTable>
 
     <Dialog
       v-model:visible="store.updateDialogVisible"
       modal
-      header="Редагувати надходження"
+      header="Нове надходження"
       :style="{ width: '25rem' }"
     >
       <span class="text-surface-500 dark:text-surface-400 block mb-8">{{
@@ -91,7 +93,7 @@ onMounted(async () => {
     <Dialog
       v-model:visible="store.updateDialogVisible"
       modal
-      header="Нове надходження"
+      header="Редагування надходження"
       :style="{ width: '25rem' }"
     >
       <span class="text-surface-500 dark:text-surface-400 block mb-8">{{
@@ -106,12 +108,15 @@ onMounted(async () => {
           type="button"
           label="Скасувати"
           severity="secondary"
-          @click="store.updateDialogVisible = false"
+          @click="store.toggleUpdateDialog()"
         ></Button>
         <Button type="button" label="Зберегти" @click="store.updateArrival()"></Button>
       </div>
 
-      <Message class="mt-5" v-for="(error, index) in store.updateErrors" :key="index" severity="error">{{ index + 1}}. {{ error }}</Message>
+      <Message class="mt-5" v-show="store.updateErrors.length > 0" severity="error">
+        Виникла помилка! Перевірте введені дані.
+        <span class="font-normal" v-for="(error, index) in store.updateErrors" :key="index">{{ index + 1 }}. {{ error }}</span>
+      </Message>
     </Dialog>
   </section>
 </template>
