@@ -5,13 +5,17 @@ import { useWashDaysStore } from '@/stores/wash-days';
 import { onMounted } from 'vue';
 import DepArrivals from '@/components/arrivals/DepArrivals.vue';
 import { Tabs, TabList, Tab, TabPanel, TabPanels } from 'primevue';
+import AbsArrivals from '@/components/arrivals/AbsArrivals.vue';
+import { useAbsArrivalsStore } from '@/stores/arrivals/abstergent-arrivals';
 
-const store = useDepArrivalsStore();
+const depArrivalsStore = useDepArrivalsStore();
+const absArrivalsStore = useAbsArrivalsStore();
 const washDaysStore = useWashDaysStore();
 
 onMounted(async () => {
   await washDaysStore.loadWashDay();
-  await store.loadArrivals();
+  await depArrivalsStore.loadArrivals();
+  await absArrivalsStore.loadArrivals();
 });
 </script>
 
@@ -37,7 +41,9 @@ onMounted(async () => {
         <TabPanel value="depTab">
           <DepArrivals />
         </TabPanel>
-        <TabPanel value="absTab"> empty </TabPanel>
+        <TabPanel value="absTab">
+          <AbsArrivals />
+        </TabPanel>
       </TabPanels>
     </Tabs>
   </section>

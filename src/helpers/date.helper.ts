@@ -1,5 +1,4 @@
 export const convertToSQLDate = (date: Date): string => {
-  date = toKievTimeZone(date);
   return date.toISOString().split('T')[0];
 };
 

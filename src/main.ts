@@ -8,7 +8,6 @@ import router from './router';
 import { definePreset } from '@primevue/themes';
 import { palette } from '@primevue/themes';
 import { uk } from 'primelocale/uk.json';
-import ConfirmationService from 'primevue/confirmationservice';
 
 const app = createApp(App);
 
@@ -32,6 +31,5 @@ app.use(PrimeVue, {
   },
   locale: uk,
 });
-app.use(ConfirmationService);
 
 app.mount('#app');

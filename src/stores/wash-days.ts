@@ -3,12 +3,14 @@ import { defineStore } from 'pinia';
 import { ref, watch, type Ref } from 'vue';
 import { useAuthStore } from './auth';
 import { useDepArrivalsStore } from './arrivals/department-arrivals';
+import { useAbsArrivalsStore } from './arrivals/abstergent-arrivals';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useWashDaysStore = defineStore('wash-days', () => {
   const auth = useAuthStore();
   const depArrivals = useDepArrivalsStore();
+  const absArrivals = useAbsArrivalsStore();
 
   const day: Ref<WashDay | null> = ref(null);
   const date: Ref<Date> = ref(new Date());
@@ -33,6 +35,7 @@ export const useWashDaysStore = defineStore('wash-days', () => {
   watch(date, async () => {
     await loadWashDay();
     await depArrivals.loadArrivals();
+    await absArrivals.loadArrivals();
   });
 
   return { day, date, loadWashDay };
