@@ -99,6 +99,25 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
     if (response.status === 403) throw new Error('Auth error');
   };
 
+  const removeArrival = async (arrId: number) => {
+    const response = await fetch(`${apiUrl}/arrivals/${arrId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth.getCookie('access_token')}`,
+      },
+    });
+
+    if (response.status === 200) await loadArrivals();
+
+    if (response.status === 401) {
+      auth.deleteCookie('access_token');
+      window.location.replace('/login');
+    }
+
+    if (response.status === 403) throw new Error('Auth error');
+  };
+
   const sumWeight = computed(() => {
     let s = 0;
 
@@ -130,6 +149,7 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
     createValidationErrors,
     updateValidationErrors,
     createArrival,
+    removeArrival,
   };
 });
 

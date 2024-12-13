@@ -10,6 +10,8 @@ import {
   Button,
   Message,
   Select,
+  ConfirmDialog,
+  useConfirm,
 } from 'primevue';
 import { onMounted, ref, type Ref } from 'vue';
 import { useDepartmentsStore } from '@/stores/handbook/departments';
@@ -19,6 +21,9 @@ const departmentsStore = useDepartmentsStore();
 
 const createDialogVisible: Ref<boolean> = ref(false);
 const updateDialogVisible: Ref<boolean> = ref(false);
+
+const confirmDepArrRemoval = useConfirm();
+const remConfirmDialogVisible = ref(false);
 
 const arrData: Ref<DepArrival> = ref({
   weight: '0',
@@ -44,8 +49,12 @@ const update = async () => {
 };
 
 const remove = async (arrId: number) => {
-  console.log(arrId);
-}
+  try {
+    await depArrStore.removeArrival(arrId);
+  } catch (e) {
+    if (e instanceof Error) console.error(e.message);
+  }
+};
 
 const toggleCreateDialog = () => {
   createDialogVisible.value = !createDialogVisible.value;
@@ -53,7 +62,7 @@ const toggleCreateDialog = () => {
   if (!createDialogVisible.value) {
     clearArrData();
     depArrStore.createValidationErrors = [];
-  };
+  }
 };
 
 const toggleUpdateDialog = (arrId: number | null = null) => {
@@ -72,7 +81,27 @@ const toggleUpdateDialog = (arrId: number | null = null) => {
   if (!updateDialogVisible.value) {
     clearArrData();
     depArrStore.updateValidationErrors = [];
-  };
+  }
+};
+
+const toggleRemoveDialog = (arrId: number) => {
+  confirmDepArrRemoval.require({
+    message: 'Ви дійсно хочете видалити надходження?',
+    header: 'Видалення надходження',
+    rejectLabel: 'Скасувати',
+    acceptLabel: 'Підтвердити',
+    acceptClass: 'p-button-danger',
+    rejectClass: 'p-button-secondary',
+    onShow: () => {
+      remConfirmDialogVisible.value = true;
+    },
+    onHide: () => {
+      remConfirmDialogVisible.value = false;
+    },
+    accept: async () => {
+      await remove(arrId);
+    },
+  });
 };
 
 const clearArrData = () => {
@@ -98,7 +127,8 @@ onMounted(async () => {
       tableStyle="min-width: 50rem"
     >
       <template #header>
-        <div class="flex justify-end">
+        <div class="flex justify-between">
+          <span class="text-xl font-bold">Одяг</span>
           <Button @click="toggleCreateDialog()" icon="pi pi-plus" rounded raised />
         </div>
       </template>
@@ -114,9 +144,11 @@ onMounted(async () => {
             rounded
           ></Button>
           <Button
+            @click="toggleRemoveDialog(data.id)"
+            :aria-expanded="remConfirmDialogVisible"
+            :aria-controls="remConfirmDialogVisible ? 'confirm' : undefined"
             class="ml-2"
             icon="pi pi-trash"
-            @click="remove(data.id)"
             severity="danger"
             rounded
           ></Button>
@@ -166,7 +198,11 @@ onMounted(async () => {
 
       <Message class="mt-5" v-show="depArrStore.createValidationErrors.length > 0" severity="error">
         Виникла помилка! Перевірте введені дані.
-        <p class="font-normal" v-for="(error, index) in depArrStore.createValidationErrors" :key="index">
+        <p
+          class="font-normal"
+          v-for="(error, index) in depArrStore.createValidationErrors"
+          :key="index"
+        >
           {{ index + 1 }}. {{ error }}
         </p>
       </Message>
@@ -202,9 +238,12 @@ onMounted(async () => {
           class="font-normal"
           v-for="(error, index) in depArrStore.updateValidationErrors"
           :key="index"
-          >{{ index + 1 }}. {{ error }}</p
         >
+          {{ index + 1 }}. {{ error }}
+        </p>
       </Message>
     </Dialog>
+
+    <ConfirmDialog id="confirm" />
   </div>
 </template>
