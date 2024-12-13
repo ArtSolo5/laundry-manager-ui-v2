@@ -7,6 +7,7 @@ export const formatToReadable = (date: string): string => {
 };
 
 export const toKievTimeZone = (date: Date) => {
-  date.setTime(date.getTime() + 2 * 60 * 60 * 1000);
-  return date;
+  const kievDateTime = new Date(date);
+  kievDateTime.setTime(date.getTime() + 2 * 60 * 60 * 1000);
+  return kievDateTime;
 };
