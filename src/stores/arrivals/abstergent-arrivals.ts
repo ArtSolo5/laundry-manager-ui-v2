@@ -20,11 +20,14 @@ export const useAbsArrivalsStore = defineStore('abstergent-arrivals', () => {
   const updateValidationErrors: Ref<string[]> = ref([]);
 
   const loadArrivals = async () => {
-    const response = await fetch(`${apiUrl}/abstergent-arrivals/date/${convertToSQLDate(toKievTimeZone(washDays.date))}`, {
-      headers: {
-        Authorization: `Bearer ${auth.getCookie('access_token')}`,
+    const response = await fetch(
+      `${apiUrl}/abstergent-arrivals/date/${convertToSQLDate(toKievTimeZone(washDays.date))}`,
+      {
+        headers: {
+          Authorization: `Bearer ${auth.getCookie('access_token')}`,
+        },
       },
-    });
+    );
 
     if (response.status === 200) {
       arrivals.value = await response.json();

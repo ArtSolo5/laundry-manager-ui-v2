@@ -4,23 +4,23 @@ import { useAuthStore } from '../auth';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export const useDepartmentsStore = defineStore('departments', () => {
+export const useUniformsStore = defineStore('uniforms', () => {
   const auth = useAuthStore();
 
-  const departments: Ref<Department[]> = ref([]);
+  const uniforms: Ref<Uniform[]> = ref([]);
 
   const createValidationErrors: Ref<string[]> = ref([]);
   const updateValidationErrors: Ref<string[]> = ref([]);
 
-  const loadDepartments = async () => {
-    const response = await fetch(`${apiUrl}/departments`, {
+  const loadUniforms = async () => {
+    const response = await fetch(`${apiUrl}/uniforms`, {
       headers: {
         Authorization: `Bearer ${auth.getCookie('access_token')}`,
       },
     });
 
     if (response.status === 200) {
-      departments.value = await response.json();
+      uniforms.value = await response.json();
     }
 
     if (response.status === 401) {
@@ -29,8 +29,8 @@ export const useDepartmentsStore = defineStore('departments', () => {
     }
   };
 
-  const createDepartment = async (payload: Department) => {
-    const response = await fetch(`${apiUrl}/departments`, {
+  const createUniform = async (payload: Uniform) => {
+    const response = await fetch(`${apiUrl}/uniforms`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export const useDepartmentsStore = defineStore('departments', () => {
     });
 
     if (response.status === 201) {
-      await loadDepartments();
+      await loadUniforms();
       createValidationErrors.value = [];
     }
 
@@ -59,8 +59,8 @@ export const useDepartmentsStore = defineStore('departments', () => {
     if (response.status === 403) throw new Error('Auth error');
   };
 
-  const updateDepartment = async (payload: Department) => {
-    const response = await fetch(`${apiUrl}/departments/${payload.id}`, {
+  const updateUniform = async (payload: Uniform) => {
+    const response = await fetch(`${apiUrl}/uniforms/${payload.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export const useDepartmentsStore = defineStore('departments', () => {
     });
 
     if (response.status === 200) {
-      await loadDepartments();
+      await loadUniforms();
       updateValidationErrors.value = [];
     }
 
@@ -89,8 +89,8 @@ export const useDepartmentsStore = defineStore('departments', () => {
     if (response.status === 403) throw new Error('Auth error');
   };
 
-  const removeDepartment = async (depId: number) => {
-    const response = await fetch(`${apiUrl}/departments/${depId}`, {
+  const removeUniform = async (depId: number) => {
+    const response = await fetch(`${apiUrl}/uniforms/${depId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ export const useDepartmentsStore = defineStore('departments', () => {
       },
     });
 
-    if (response.status === 200) await loadDepartments();
+    if (response.status === 200) await loadUniforms();
 
     if (response.status === 401) {
       auth.deleteCookie('access_token');
@@ -109,21 +109,21 @@ export const useDepartmentsStore = defineStore('departments', () => {
   };
 
   return {
-    departments,
-    loadDepartments,
-    createDepartment,
-    updateDepartment,
-    removeDepartment,
+    uniforms,
+    loadUniforms,
+    createUniform,
+    updateUniform,
+    removeUniform,
     createValidationErrors,
     updateValidationErrors,
   };
 });
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useDepartmentsStore, import.meta.hot));
+  import.meta.hot.accept(acceptHMRUpdate(useUniformsStore, import.meta.hot));
 }
 
-export interface Department {
+export interface Uniform {
   id?: number;
   name: string;
 }

@@ -18,7 +18,7 @@ export const useProgramsStore = defineStore('programs', () => {
     });
 
     if (response.status === 200) {
-        programs.value = await response.json();
+      programs.value = await response.json();
     }
 
     if (response.status === 401) {

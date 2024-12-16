@@ -19,11 +19,14 @@ export const useWashesStore = defineStore('washes', () => {
   const updateValidationErrors: Ref<string[]> = ref([]);
 
   const loadWashes = async () => {
-    const response = await fetch(`${apiUrl}/washes/date/${convertToSQLDate(toKievTimeZone(washDays.date))}`, {
-      headers: {
-        Authorization: `Bearer ${auth.getCookie('access_token')}`,
+    const response = await fetch(
+      `${apiUrl}/washes/date/${convertToSQLDate(toKievTimeZone(washDays.date))}`,
+      {
+        headers: {
+          Authorization: `Bearer ${auth.getCookie('access_token')}`,
+        },
       },
-    });
+    );
 
     if (response.status === 200) {
       washes.value = await response.json();

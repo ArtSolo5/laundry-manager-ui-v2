@@ -18,11 +18,14 @@ export const useWashDaysStore = defineStore('wash-days', () => {
   const date: Ref<Date> = ref(new Date());
 
   const loadWashDay = async () => {
-    const response = await fetch(`${apiUrl}/wash-days/date/${convertToSQLDate(toKievTimeZone(date.value))}`, {
-      headers: {
-        Authorization: `Bearer ${auth.getCookie('access_token')}`,
+    const response = await fetch(
+      `${apiUrl}/wash-days/date/${convertToSQLDate(toKievTimeZone(date.value))}`,
+      {
+        headers: {
+          Authorization: `Bearer ${auth.getCookie('access_token')}`,
+        },
       },
-    });
+    );
 
     if (response.status === 200) {
       day.value = await response.json();
