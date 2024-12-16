@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 import { ref, type Ref } from 'vue';
 import { useAuthStore } from '../auth';
 
@@ -28,6 +28,10 @@ export const useAbstergentsStore = defineStore('abstergents', () => {
 
   return { abstergents, loadAbstergents };
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useAbstergentsStore, import.meta.hot));
+}
 
 export interface Abstergent {
   id: number;

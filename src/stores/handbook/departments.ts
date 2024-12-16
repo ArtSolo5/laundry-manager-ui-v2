@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 import { ref, type Ref } from 'vue';
 import { useAuthStore } from '../auth';
 
@@ -28,6 +28,10 @@ export const useDepartmentsStore = defineStore('departments', () => {
 
   return { departments, loadDepartments };
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useDepartmentsStore, import.meta.hot));
+}
 
 interface Department {
   id: number;

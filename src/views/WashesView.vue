@@ -5,12 +5,12 @@ import { useWashDaysStore } from '@/stores/wash-days';
 import { useWashesStore } from '@/stores/washes';
 import { onMounted } from 'vue';
 
-const washes = useWashesStore();
+const washesStore = useWashesStore();
 const washDaysStore = useWashDaysStore();
 
 onMounted(async () => {
   await washDaysStore.loadWashDay();
-  await washes.loadWashes();
+  await washesStore.loadWashes();
 });
 </script>
 

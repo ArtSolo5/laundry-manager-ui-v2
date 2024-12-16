@@ -1,5 +1,5 @@
 import { convertToSQLDate, toKievTimeZone } from '@/helpers/date.helper';
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 import { ref, watch, type Ref } from 'vue';
 import { useAuthStore } from './auth';
 import { useDepArrivalsStore } from './arrivals/department-arrivals';
@@ -43,6 +43,10 @@ export const useWashDaysStore = defineStore('wash-days', () => {
 
   return { day, date, loadWashDay };
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useWashDaysStore, import.meta.hot));
+}
 
 interface WashDay {
   id: number;

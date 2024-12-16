@@ -1,4 +1,4 @@
-import { convertToSQLDate } from '@/helpers/date.helper';
+import { convertToSQLDate, toKievTimeZone } from '@/helpers/date.helper';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { useAuthStore } from '../auth';
 import { computed, ref, type Ref } from 'vue';
@@ -20,7 +20,7 @@ export const useAbsArrivalsStore = defineStore('abstergent-arrivals', () => {
   const updateValidationErrors: Ref<string[]> = ref([]);
 
   const loadArrivals = async () => {
-    const response = await fetch(`${apiUrl}/abstergent-arrivals/date/${convertToSQLDate(washDays.date)}`, {
+    const response = await fetch(`${apiUrl}/abstergent-arrivals/date/${convertToSQLDate(toKievTimeZone(washDays.date))}`, {
       headers: {
         Authorization: `Bearer ${auth.getCookie('access_token')}`,
       },

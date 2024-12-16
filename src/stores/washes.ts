@@ -1,4 +1,4 @@
-import { convertToSQLDate } from '@/helpers/date.helper';
+import { convertToSQLDate, toKievTimeZone } from '@/helpers/date.helper';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { useAuthStore } from './auth';
 import { computed, ref, type Ref } from 'vue';
@@ -19,7 +19,7 @@ export const useWashesStore = defineStore('washes', () => {
   const updateValidationErrors: Ref<string[]> = ref([]);
 
   const loadWashes = async () => {
-    const response = await fetch(`${apiUrl}/washes/date/${convertToSQLDate(washDays.date)}`, {
+    const response = await fetch(`${apiUrl}/washes/date/${convertToSQLDate(toKievTimeZone(washDays.date))}`, {
       headers: {
         Authorization: `Bearer ${auth.getCookie('access_token')}`,
       },
