@@ -8,6 +8,7 @@ import { Tabs, TabList, Tab, TabPanel, TabPanels } from 'primevue';
 import TheDepartments from '@/components/handbook/TheDepartments.vue';
 import TheUniforms from '@/components/handbook/TheUniforms.vue';
 import TheAbstergents from '@/components/handbook/TheAbstergents.vue';
+import ThePrograms from '@/components/handbook/ThePrograms.vue';
 
 const programsStore = useProgramsStore();
 const departmentsStore = useDepartmentsStore();
@@ -34,7 +35,9 @@ onMounted(async () => {
         <Tab value="uniformsTab">Одяг</Tab>
       </TabList>
       <TabPanels>
-        <TabPanel value="programsTab"> </TabPanel>
+        <TabPanel value="programsTab">
+          <ThePrograms />
+        </TabPanel>
         <TabPanel value="departmentsTab">
           <TheDepartments />
         </TabPanel>

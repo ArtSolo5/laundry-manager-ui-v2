@@ -108,7 +108,15 @@ export const useAbstergentsStore = defineStore('abstergents', () => {
     if (response.status === 403) throw new Error('Auth error');
   };
 
-  return { abstergents, loadAbstergents, createAbstergent, updateAbstergent, removeAbstergent, createValidationErrors, updateValidationErrors };
+  return {
+    abstergents,
+    loadAbstergents,
+    createAbstergent,
+    updateAbstergent,
+    removeAbstergent,
+    createValidationErrors,
+    updateValidationErrors,
+  };
 });
 
 if (import.meta.hot) {
