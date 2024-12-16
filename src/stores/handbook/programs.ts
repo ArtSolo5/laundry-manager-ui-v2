@@ -2,7 +2,6 @@ import { acceptHMRUpdate, defineStore } from 'pinia';
 import { ref, type Ref } from 'vue';
 import { useAuthStore } from '../auth';
 import type { Abstergent } from './abstergents';
-import { useDepartmentsStore } from './departments';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -32,11 +31,12 @@ export const useProgramsStore = defineStore('programs', () => {
 });
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useDepartmentsStore, import.meta.hot));
+  import.meta.hot.accept(acceptHMRUpdate(useProgramsStore, import.meta.hot));
 }
 
 export interface Program {
   id: number;
+  name: string;
   uniform_id: number;
   code: number;
   temperature: number;

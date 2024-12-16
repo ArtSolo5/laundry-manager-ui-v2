@@ -166,7 +166,7 @@ onMounted(async () => {
           variant="filled"
           :options="programsStore.programs"
           optionValue="id"
-          optionLabel="uniform.name"
+          optionLabel="name"
           placeholder="Оберіть програму"
           class="w-full"
         />
@@ -205,7 +205,7 @@ onMounted(async () => {
       :closable="false"
     >
       <span class="text-surface-500 dark:text-surface-400 block mb-8">
-        {{ programsStore.programs.find((p) => p.id === washData.program_id)?.uniform.name }}
+        {{ programsStore.programs.find((p) => p.id === washData.program_id)?.name }}
       </span>
       <div class="flex items-center gap-4 mb-4">
         <label for="weight" class="font-semibold w-28">Вага, Кг</label>
