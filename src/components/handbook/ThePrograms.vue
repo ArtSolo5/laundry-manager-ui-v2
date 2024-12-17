@@ -2,7 +2,17 @@
 import { useAbstergentsStore } from '@/stores/handbook/abstergents';
 import { useProgramsStore, type Program } from '@/stores/handbook/programs';
 import { useUniformsStore } from '@/stores/handbook/uniforms';
-import { DataTable, Column, Dialog, InputText, Button, Message, Select, ToggleSwitch, Divider } from 'primevue';
+import {
+  DataTable,
+  Column,
+  Dialog,
+  InputText,
+  Button,
+  Message,
+  Select,
+  ToggleSwitch,
+  Divider,
+} from 'primevue';
 import { ref, type Ref } from 'vue';
 
 const programsStore = useProgramsStore();
@@ -18,7 +28,7 @@ const programData: Ref<Program> = ref({
   code: '',
   temperature: '',
   is_heavy_soiling: false,
-  norms: []
+  norms: [],
 });
 
 const create = async () => {
@@ -67,7 +77,7 @@ const toggleUpdateDialog = (programId: number | null = null) => {
       temperature: program.temperature,
       uniform_id: program.uniform?.id,
       is_heavy_soiling: program.is_heavy_soiling,
-      norms: program.norms
+      norms: program.norms,
     };
   }
 
@@ -89,7 +99,7 @@ const toggleRemoveDialog = (programId: number | null = null) => {
       temperature: program.temperature,
       uniform_id: program.uniform?.id,
       is_heavy_soiling: program.is_heavy_soiling,
-      norms: program.norms
+      norms: program.norms,
     };
   }
 
@@ -104,7 +114,7 @@ const clearProgramData = () => {
     code: '',
     temperature: '',
     is_heavy_soiling: false,
-    norms: []
+    norms: [],
   };
 };
 
@@ -116,12 +126,12 @@ const addNorm = () => {
         volume: '0',
       },
     ],
-  })
-}
+  });
+};
 
 const removeNorm = (index: number) => {
-  programData.value.norms.splice(index, 1)
-}
+  programData.value.norms.splice(index, 1);
+};
 </script>
 
 <template>
@@ -169,16 +179,16 @@ const removeNorm = (index: number) => {
       <div class="flex">
         <div>
           <div class="flex items-center gap-4 mb-4">
-          <label for="weight" class="font-semibold w-24">Одяг</label>
-          <Select
-            v-model="programData.uniform_id"
-            variant="filled"
-            :options="uniformsStore.uniforms"
-            optionValue="id"
-            optionLabel="name"
-            placeholder="Оберіть одяг"
-            class="w-full"
-          />
+            <label for="weight" class="font-semibold w-24">Одяг</label>
+            <Select
+              v-model="programData.uniform_id"
+              variant="filled"
+              :options="uniformsStore.uniforms"
+              optionValue="id"
+              optionLabel="name"
+              placeholder="Оберіть одяг"
+              class="w-full"
+            />
           </div>
           <div class="flex items-center gap-4 mb-4">
             <label for="code" class="font-semibold w-24">Код</label>
@@ -186,18 +196,26 @@ const removeNorm = (index: number) => {
           </div>
           <div class="flex items-center gap-4 mb-4">
             <label for="temperature" class="font-semibold w-24">Т, °C</label>
-            <InputText id="temperature" class="flex-auto w-full" v-model="programData.temperature" />
+            <InputText
+              id="temperature"
+              class="flex-auto w-full"
+              v-model="programData.temperature"
+            />
           </div>
           <div class="flex justify-between items-center gap-4 mb-4">
             <label class="font-semibold" for="isHeavySoiling">Сильного забруднення</label>
-            <ToggleSwitch id="isHeavySoiling" v-model="programData.is_heavy_soiling"  />
+            <ToggleSwitch id="isHeavySoiling" v-model="programData.is_heavy_soiling" />
           </div>
         </div>
         <Divider layout="vertical" />
         <div>
           <p class="font-semibold">Норми</p>
 
-          <div class="flex items-center gap-2 mt-3" v-for="(norm, index) in programData.norms" :key="index">
+          <div
+            class="flex items-center gap-2 mt-3"
+            v-for="(norm, index) in programData.norms"
+            :key="index"
+          >
             <Select
               v-model="norm.abstergent_id"
               variant="filled"
@@ -257,19 +275,19 @@ const removeNorm = (index: number) => {
       :style="{ 'min-width': '25rem' }"
       :closable="false"
     >
-    <div class="flex">
+      <div class="flex">
         <div>
           <div class="flex items-center gap-4 mb-4">
-          <label for="weight" class="font-semibold w-24">Одяг</label>
-          <Select
-            v-model="programData.uniform_id"
-            variant="filled"
-            :options="uniformsStore.uniforms"
-            optionValue="id"
-            optionLabel="name"
-            placeholder="Оберіть одяг"
-            class="w-full"
-          />
+            <label for="weight" class="font-semibold w-24">Одяг</label>
+            <Select
+              v-model="programData.uniform_id"
+              variant="filled"
+              :options="uniformsStore.uniforms"
+              optionValue="id"
+              optionLabel="name"
+              placeholder="Оберіть одяг"
+              class="w-full"
+            />
           </div>
           <div class="flex items-center gap-4 mb-4">
             <label for="code" class="font-semibold w-24">Код</label>
@@ -277,18 +295,26 @@ const removeNorm = (index: number) => {
           </div>
           <div class="flex items-center gap-4 mb-4">
             <label for="temperature" class="font-semibold w-24">Т, °C</label>
-            <InputText id="temperature" class="flex-auto w-full" v-model="programData.temperature" />
+            <InputText
+              id="temperature"
+              class="flex-auto w-full"
+              v-model="programData.temperature"
+            />
           </div>
           <div class="flex justify-between items-center gap-4 mb-4">
             <label class="font-semibold" for="isHeavySoiling">Сильного забруднення</label>
-            <ToggleSwitch id="isHeavySoiling" v-model="programData.is_heavy_soiling"  />
+            <ToggleSwitch id="isHeavySoiling" v-model="programData.is_heavy_soiling" />
           </div>
         </div>
         <Divider layout="vertical" />
         <div>
           <p class="font-semibold">Норми</p>
 
-          <div class="flex items-center gap-2 mt-3" v-for="(norm, index) in programData.norms" :key="index">
+          <div
+            class="flex items-center gap-2 mt-3"
+            v-for="(norm, index) in programData.norms"
+            :key="index"
+          >
             <Select
               v-model="norm.abstergent_id"
               variant="filled"

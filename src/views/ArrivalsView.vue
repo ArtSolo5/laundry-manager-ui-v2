@@ -30,6 +30,7 @@ onMounted(async () => {
       showIcon
       fluid
       iconDisplay="input"
+      :manualInput="false"
     />
 
     <Tabs value="depTab">

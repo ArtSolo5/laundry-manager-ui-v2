@@ -25,6 +25,7 @@ onMounted(async () => {
       showIcon
       fluid
       iconDisplay="input"
+      :manualInput="false"
     />
 
     <TheWashes />

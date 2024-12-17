@@ -118,7 +118,15 @@ export const useProgramsStore = defineStore('programs', () => {
     if (response.status === 403) throw new Error('Auth error');
   };
 
-  return { programs, loadPrograms, createProgram, updateProgram, removeProgram, createValidationErrors, updateValidationErrors };
+  return {
+    programs,
+    loadPrograms,
+    createProgram,
+    updateProgram,
+    removeProgram,
+    createValidationErrors,
+    updateValidationErrors,
+  };
 });
 
 if (import.meta.hot) {
