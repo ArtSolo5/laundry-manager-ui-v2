@@ -28,8 +28,6 @@ export const useReportStore = defineStore('report', () => {
       report.value = await response.json();
     }
 
-    console.log(report.value);
-
     if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');

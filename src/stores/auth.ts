@@ -47,6 +47,20 @@ export const useAuthStore = defineStore('auth', () => {
     return !!user.value;
   };
 
+  const isAllowed = (permissions: string[]) => {
+    if (!permissions.length) return true;
+
+    let isAllowed = false;
+
+    permissions.forEach((p) => {
+      if (user.value?.permissions.map((permission) => permission.name).includes(p)) {
+        isAllowed = true;
+      }
+    });
+
+    return isAllowed;
+  };
+
   const loadUserFromToken = () => {
     if (user.value) return;
 
@@ -92,6 +106,7 @@ export const useAuthStore = defineStore('auth', () => {
     loadStoredCreds,
     loadUserFromToken,
     isAuth,
+    isAllowed,
   };
 });
 
