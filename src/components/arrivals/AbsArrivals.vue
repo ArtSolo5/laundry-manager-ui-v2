@@ -105,9 +105,7 @@ const clearArrData = () => {
 };
 
 onMounted(async () => {
-  if (abstergentsStore.abstergents.length === 0) {
-    await abstergentsStore.loadAbstergents();
-  }
+  if (!abstergentsStore.abstergents.length) await abstergentsStore.loadAbstergents();
 });
 </script>
 

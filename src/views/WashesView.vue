@@ -9,7 +9,7 @@ const washesStore = useWashesStore();
 const washDaysStore = useWashDaysStore();
 
 onMounted(async () => {
-  await washDaysStore.loadWashDay();
+  if (!washDaysStore.day) await washDaysStore.loadWashDay();
   await washesStore.loadWashes();
 });
 </script>
@@ -18,15 +18,21 @@ onMounted(async () => {
   <section class="p-5">
     <h1 class="font-bold text-lg">Прання</h1>
 
-    <DatePicker
-      class="mt-5 w-44"
-      v-model="washDaysStore.date"
-      dateFormat="dd.mm.yy"
-      showIcon
-      fluid
-      iconDisplay="input"
-      :manualInput="false"
-    />
+    <div class="flex items-center justify-between">
+      <DatePicker
+        class="mt-5 w-44"
+        v-model="washDaysStore.date"
+        dateFormat="dd.mm.yy"
+        showIcon
+        fluid
+        iconDisplay="input"
+        :manualInput="false"
+      />
+
+      <p class="font-semibold">
+        Залишок невипраного одягу: <span style="color: red">{{ washDaysStore.day?.leavings }}</span>
+      </p>
+    </div>
 
     <TheWashes />
   </section>

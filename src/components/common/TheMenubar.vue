@@ -27,13 +27,13 @@ const authStore = useAuthStore();
 </template>
 
 <style>
-  .p-menubar {
-    background-color: #27386B;
-  }
-  #logout-btn {
-    color: white;
-  }
-  #logout-btn:hover {
-    background-color: #27386B;
-  }
+.p-menubar {
+  background-color: #27386b;
+}
+#logout-btn {
+  color: white;
+}
+#logout-btn:hover {
+  background-color: #27386b;
+}
 </style>

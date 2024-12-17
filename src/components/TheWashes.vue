@@ -105,9 +105,7 @@ const clearWashData = () => {
 };
 
 onMounted(async () => {
-  if (programsStore.programs.length === 0) {
-    await programsStore.loadPrograms();
-  }
+  if (!programsStore.programs.length) await programsStore.loadPrograms();
 });
 </script>
 

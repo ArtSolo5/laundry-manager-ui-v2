@@ -7,34 +7,43 @@ const items: MenuItem[] = [
   {
     label: 'Головна',
     icon: PrimeIcons.HOME,
-    url: '/',
+    route: '/',
   },
   {
     label: 'Надходження',
     icon: PrimeIcons.PLUS_CIRCLE,
-    url: '/arrivals',
+    route: '/arrivals',
   },
   {
     label: 'Прання',
     icon: PrimeIcons.PLAY,
-    url: '/washes',
+    route: '/washes',
   },
   {
     label: 'Звіт',
     icon: PrimeIcons.FILE,
-    url: '/report',
+    route: '/report',
   },
   {
     label: 'Довідник',
     icon: PrimeIcons.QUESTION_CIRCLE,
-    url: '/handbook',
+    route: '/handbook',
   },
 ];
 </script>
 
 <template>
   <aside class="h-full">
-    <TieredMenu class="border-r border-0 rounded-none" :model="items" />
+    <TieredMenu class="border-r border-0 rounded-none" :model="items">
+      <template #item="{ item, props }">
+        <router-link v-slot="{ href, navigate }" :to="item.route" custom>
+            <a :href="href" v-bind="props.action" @click="navigate">
+                <span :class="item.icon" />
+                <span class="ml-2">{{ item.label }}</span>
+            </a>
+        </router-link>
+      </template>
+    </TieredMenu>
   </aside>
 </template>
 

@@ -105,9 +105,7 @@ const clearArrData = () => {
 };
 
 onMounted(async () => {
-  if (departmentsStore.departments.length === 0) {
-    await departmentsStore.loadDepartments();
-  }
+  if (!departmentsStore.departments.length) await departmentsStore.loadDepartments();
 });
 </script>
 

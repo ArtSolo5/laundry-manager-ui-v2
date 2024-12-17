@@ -23,10 +23,7 @@ const reportStore = useReportStore();
         :manualInput="false"
       />
 
-      <Button
-        @click="reportStore.generateReport()"
-        rounded
-      >Сформувати звіт</Button>
+      <Button @click="reportStore.generateReport()" rounded>Сформувати звіт</Button>
     </div>
 
     <TheReport />

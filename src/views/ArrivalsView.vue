@@ -13,7 +13,7 @@ const absArrivalsStore = useAbsArrivalsStore();
 const washDaysStore = useWashDaysStore();
 
 onMounted(async () => {
-  await washDaysStore.loadWashDay();
+  if (!washDaysStore.day) await washDaysStore.loadWashDay();
   await depArrivalsStore.loadArrivals();
   await absArrivalsStore.loadArrivals();
 });

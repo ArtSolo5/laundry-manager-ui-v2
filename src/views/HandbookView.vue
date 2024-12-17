@@ -16,10 +16,10 @@ const uniformsStore = useUniformsStore();
 const abstergentsStore = useAbstergentsStore();
 
 onMounted(async () => {
-  await programsStore.loadPrograms();
-  await departmentsStore.loadDepartments();
-  await uniformsStore.loadUniforms();
-  await abstergentsStore.loadAbstergents();
+  if (!programsStore.programs.length) await programsStore.loadPrograms();
+  if (!departmentsStore.departments.length) await departmentsStore.loadDepartments();
+  if (!uniformsStore.uniforms.length) await uniformsStore.loadUniforms();
+  if (!abstergentsStore.abstergents.length) await abstergentsStore.loadAbstergents();
 });
 </script>
 

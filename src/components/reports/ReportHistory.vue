@@ -7,7 +7,13 @@ const reportStore = useReportStore();
 </script>
 
 <template>
-  <DataTable class="mt-5 w-full" :value="reportStore.reports" tableStyle="min-width: 50rem" paginator :rows="5">
+  <DataTable
+    class="mt-5 w-full"
+    :value="reportStore.reports"
+    tableStyle="min-width: 50rem"
+    paginator
+    :rows="5"
+  >
     <Column field="filename" header="Назва файлу"></Column>
     <Column field="created_at" header="Дата створення">
       <template #body="slotProps">
@@ -15,14 +21,14 @@ const reportStore = useReportStore();
       </template>
     </Column>
     <Column class="text-end">
-        <template #body="{ data }">
-          <Button
-            icon="pi pi-download"
-            @click="reportStore.downloadReport(data.filename)"
-            severity="success"
-            rounded
-          ></Button>
-        </template>
-      </Column>
+      <template #body="{ data }">
+        <Button
+          icon="pi pi-download"
+          @click="reportStore.downloadReport(data.filename)"
+          severity="success"
+          rounded
+        ></Button>
+      </template>
+    </Column>
   </DataTable>
 </template>

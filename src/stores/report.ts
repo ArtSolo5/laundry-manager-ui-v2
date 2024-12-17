@@ -75,7 +75,7 @@ export const useReportStore = defineStore('report', () => {
 
   const downloadReport = async (filename: string) => {
     window.location.replace(`${apiUrl}/reports/filename/${filename}`);
-  }
+  };
 
   watch(dateRange, async () => {
     if (dateRange.value[0] && dateRange.value[1]) await loadReport();
@@ -116,7 +116,7 @@ export const useReportStore = defineStore('report', () => {
     generateReport,
     reports,
     loadReports,
-    downloadReport
+    downloadReport,
   };
 });
 

@@ -54,4 +54,5 @@ if (import.meta.hot) {
 interface WashDay {
   id: number;
   date: Date;
+  leavings: number;
 }

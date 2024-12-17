@@ -53,6 +53,7 @@ export const useWashesStore = defineStore('washes', () => {
     });
 
     if (response.status === 201) {
+      await washDays.loadWashDay();
       await loadWashes();
       createValidationErrors.value = [];
     }
@@ -85,6 +86,7 @@ export const useWashesStore = defineStore('washes', () => {
     });
 
     if (response.status === 200) {
+      await washDays.loadWashDay();
       await loadWashes();
       updateValidationErrors.value = [];
     }
@@ -111,7 +113,10 @@ export const useWashesStore = defineStore('washes', () => {
       },
     });
 
-    if (response.status === 200) await loadWashes();
+    if (response.status === 200) {
+      await washDays.loadWashDay();
+      await loadWashes();
+    }
 
     if (response.status === 401) {
       auth.deleteCookie('access_token');
