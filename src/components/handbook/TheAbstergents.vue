@@ -103,7 +103,12 @@ const clearAbstergentData = () => {
           <Button @click="toggleCreateDialog()" icon="pi pi-plus" rounded raised />
         </div>
       </template>
-      <Column field="name" header="Назва"></Column>
+      <Column field="name" header="Назва" />
+      <Column header="Залишок, Мл">
+        <template #body="{ data }">
+          {{ data.leavings[0].volume }}
+        </template>
+      </Column>
       <Column class="text-end">
         <template #body="{ data }">
           <Button
