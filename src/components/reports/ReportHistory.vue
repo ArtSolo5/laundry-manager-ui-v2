@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatToReadable } from '@/helpers/date.helper';
+import { formatToReadable, toKievTimeZone } from '@/helpers/date.helper';
 import { useReportStore } from '@/stores/report';
 import { DataTable, Column, Button } from 'primevue';
 
@@ -11,7 +11,7 @@ const reportStore = useReportStore();
     <Column field="filename" header="Назва файлу"></Column>
     <Column field="created_at" header="Дата створення">
       <template #body="slotProps">
-        <span>{{ formatToReadable(slotProps.data.created_at) }}</span>
+        <span>{{ formatToReadable(toKievTimeZone(new Date(slotProps.data.created_at))) }}</span>
       </template>
     </Column>
     <Column class="text-end">

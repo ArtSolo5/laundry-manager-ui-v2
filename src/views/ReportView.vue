@@ -8,7 +8,7 @@ const reportStore = useReportStore();
 </script>
 
 <template>
-  <section class="p-10">
+  <section class="p-5">
     <h1 class="font-bold text-lg">Звіт</h1>
 
     <div class="flex items-center justify-between">

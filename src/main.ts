@@ -30,6 +30,11 @@ app.use(PrimeVue, {
     },
   },
   locale: uk,
+  components: {
+    menubar: {
+      background: '{surface.700}'
+    }
+  }
 });
 
 app.mount('#app');

@@ -1,14 +1,39 @@
 <script setup lang="ts">
-import Menubar from 'primevue/menubar';
-import DarkLogo from '../icons/DarkLogo.vue';
+import { Menubar, Button } from 'primevue';
+import LightLogo from '../icons/LightLogo.vue';
+import { useAuthStore } from '@/stores/auth';
+
+const authStore = useAuthStore();
 </script>
 
 <template>
   <header>
     <Menubar class="border-b border-0 rounded-none">
       <template #start>
-        <DarkLogo class="w-14" />
+        <LightLogo class="w-14" />
+      </template>
+      <template #end>
+        <Button
+          @click="authStore.logout"
+          label="Вийти"
+          type="button"
+          id="logout-btn"
+          variant="text"
+          icon="pi pi-sign-out"
+        />
       </template>
     </Menubar>
   </header>
 </template>
+
+<style>
+  .p-menubar {
+    background-color: #27386B;
+  }
+  #logout-btn {
+    color: white;
+  }
+  #logout-btn:hover {
+    background-color: #27386B;
+  }
+</style>
