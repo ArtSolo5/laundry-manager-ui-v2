@@ -2,11 +2,13 @@ import { acceptHMRUpdate, defineStore } from 'pinia';
 import { computed, ref, watch, type Ref } from 'vue';
 import { useAuthStore } from './auth';
 import { convertToSQLDate, toKievTimeZone } from '@/helpers/date.helper';
+import { useToastStore } from './toast';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useReportStore = defineStore('report', () => {
   const auth = useAuthStore();
+  const toastStore = useToastStore();
 
   const dateRange = ref([new Date(), new Date()]);
 
@@ -48,11 +50,13 @@ export const useReportStore = defineStore('report', () => {
       const filename = await response.text();
       await loadReports();
       window.location.replace(`${apiUrl}/reports/filename/${filename}`);
-    }
-
-    if (response.status === 401) {
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast('report-errors');
+    } else {
+      toastStore.showServerErrorToast('report-errors');
     }
   };
 

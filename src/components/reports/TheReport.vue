@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DataTable, Column } from 'primevue';
+import { DataTable, Column, Toast } from 'primevue';
 import { useReportStore } from '@/stores/report';
 import { onMounted } from 'vue';
 
@@ -24,4 +24,6 @@ onMounted(async () => {
     </template>
     <Column field="sum" header="Всього, Мл"></Column>
   </DataTable>
+
+  <Toast group="report-errors" position="top-center"/>
 </template>
