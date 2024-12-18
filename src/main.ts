@@ -8,7 +8,7 @@ import router from './router';
 import { definePreset } from '@primevue/themes';
 import { palette } from '@primevue/themes';
 import { uk } from 'primelocale/uk.json';
-
+import { useAuthStore } from './stores/auth';
 const app = createApp(App);
 
 const customPreset = definePreset(Aura, {
@@ -18,6 +18,12 @@ const customPreset = definePreset(Aura, {
 });
 
 app.use(createPinia());
+
+router.beforeEach((to) => {
+  const authStore = useAuthStore();
+  if (!authStore.isAuth() && to.path !== '/login') return '/login'
+});
+
 app.use(router);
 app.use(PrimeVue, {
   theme: {
