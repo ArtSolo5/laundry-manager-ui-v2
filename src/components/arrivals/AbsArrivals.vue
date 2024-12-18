@@ -14,6 +14,7 @@ import {
 import { onMounted, ref, type Ref } from 'vue';
 import { useAbstergentsStore } from '@/stores/handbook/abstergents';
 
+const absArrivalsStore = useAbsArrivalsStore();
 const absArrStore = useAbsArrivalsStore();
 const abstergentsStore = useAbstergentsStore();
 
@@ -105,6 +106,7 @@ const clearArrData = () => {
 };
 
 onMounted(async () => {
+  await absArrivalsStore.loadArrivals();
   if (!abstergentsStore.abstergents.length) await abstergentsStore.loadAbstergents();
 });
 </script>

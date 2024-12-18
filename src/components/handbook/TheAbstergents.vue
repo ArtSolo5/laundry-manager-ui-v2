@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAbstergentsStore, type Abstergent } from '@/stores/handbook/abstergents';
 import { DataTable, Column, Dialog, InputText, Button, Message } from 'primevue';
-import { ref, type Ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
 
 const abstergentsStore = useAbstergentsStore();
 
@@ -87,6 +87,10 @@ const clearAbstergentData = () => {
     name: '',
   };
 };
+
+onMounted(async () => {
+  if (!abstergentsStore.abstergents.length) await abstergentsStore.loadAbstergents();
+});
 </script>
 
 <template>

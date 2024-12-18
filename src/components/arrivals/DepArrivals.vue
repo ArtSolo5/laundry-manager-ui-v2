@@ -16,6 +16,7 @@ import { useDepartmentsStore } from '@/stores/handbook/departments';
 
 const depArrStore = useDepArrivalsStore();
 const departmentsStore = useDepartmentsStore();
+const depArrivalsStore = useDepArrivalsStore();
 
 const createDialogVisible: Ref<boolean> = ref(false);
 const updateDialogVisible: Ref<boolean> = ref(false);
@@ -105,6 +106,7 @@ const clearArrData = () => {
 };
 
 onMounted(async () => {
+  await depArrivalsStore.loadArrivals();
   if (!departmentsStore.departments.length) await departmentsStore.loadDepartments();
 });
 </script>

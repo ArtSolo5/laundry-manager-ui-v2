@@ -13,7 +13,7 @@ import {
   ToggleSwitch,
   Divider,
 } from 'primevue';
-import { ref, type Ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
 
 const programsStore = useProgramsStore();
 const uniformsStore = useUniformsStore();
@@ -132,6 +132,10 @@ const addNorm = () => {
 const removeNorm = (index: number) => {
   programData.value.norms.splice(index, 1);
 };
+
+onMounted(async () => {
+  if (!programsStore.programs.length) await programsStore.loadPrograms();
+});
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useUniformsStore, type Uniform } from '@/stores/handbook/uniforms';
 import { DataTable, Column, Dialog, InputText, Button, Message } from 'primevue';
-import { ref, type Ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
 
 const uniformsStore = useUniformsStore();
 
@@ -87,6 +87,10 @@ const clearUniformData = () => {
     name: '',
   };
 };
+
+onMounted(async () => {
+  if (!uniformsStore.uniforms.length) await uniformsStore.loadUniforms();
+});
 </script>
 
 <template>

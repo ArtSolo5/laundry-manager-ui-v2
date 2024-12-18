@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDepartmentsStore, type Department } from '@/stores/handbook/departments';
 import { DataTable, Column, Dialog, InputText, Button, Message } from 'primevue';
-import { ref, type Ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
 
 const departmentsStore = useDepartmentsStore();
 
@@ -87,6 +87,10 @@ const clearDepartmentData = () => {
     name: '',
   };
 };
+
+onMounted(async () => {
+  if (!departmentsStore.departments.length) await departmentsStore.loadDepartments();
+});
 </script>
 
 <template>
