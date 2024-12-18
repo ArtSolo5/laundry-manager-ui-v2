@@ -10,7 +10,9 @@ const authStore = useAuthStore();
   <header>
     <Menubar class="border-b border-0 rounded-none">
       <template #start>
-        <LightLogo class="w-14" />
+        <RouterLink to="/">
+          <LightLogo class="w-14" />
+        </RouterLink>
       </template>
       <template #end>
         <Button
