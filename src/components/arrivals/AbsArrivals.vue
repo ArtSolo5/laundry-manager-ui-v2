@@ -116,6 +116,7 @@ onMounted(async () => {
       selectionMode="single"
       :value="absArrStore.arrivals"
       tableStyle="min-width: 50rem"
+      size="small"
     >
       <template #header>
         <div class="flex justify-between">

@@ -96,6 +96,7 @@ const clearAbstergentData = () => {
       selectionMode="single"
       :value="abstergentsStore.abstergents"
       tableStyle="min-width: 50rem"
+      size="small"
     >
       <template #header>
         <div class="flex justify-between">
@@ -106,7 +107,7 @@ const clearAbstergentData = () => {
       <Column field="name" header="Назва" />
       <Column header="Залишок, Мл">
         <template #body="{ data }">
-          {{ data.leavings[0].volume }}
+          {{ data.leavings.length ? data.leavings[0].volume : '-' }}
         </template>
       </Column>
       <Column class="text-end">

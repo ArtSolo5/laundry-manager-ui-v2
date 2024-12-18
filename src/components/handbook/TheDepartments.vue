@@ -96,6 +96,7 @@ const clearDepartmentData = () => {
       selectionMode="single"
       :value="departmentsStore.departments"
       tableStyle="min-width: 50rem"
+      size="small"
     >
       <template #header>
         <div class="flex justify-between">

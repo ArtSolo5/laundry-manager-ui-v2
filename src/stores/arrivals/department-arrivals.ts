@@ -53,6 +53,7 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
     });
 
     if (response.status === 201) {
+      await washDays.loadWashDay();
       await loadArrivals();
       createValidationErrors.value = [];
     }
@@ -85,6 +86,7 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
     });
 
     if (response.status === 200) {
+      await washDays.loadWashDay();
       await loadArrivals();
       updateValidationErrors.value = [];
     }
@@ -111,7 +113,10 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
       },
     });
 
-    if (response.status === 200) await loadArrivals();
+    if (response.status === 200) {
+      await washDays.loadWashDay();
+      await loadArrivals();
+    }
 
     if (response.status === 401) {
       auth.deleteCookie('access_token');

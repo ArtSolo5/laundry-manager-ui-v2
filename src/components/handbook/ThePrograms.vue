@@ -141,6 +141,7 @@ const removeNorm = (index: number) => {
       selectionMode="single"
       :value="programsStore.programs"
       tableStyle="min-width: 50rem"
+      size="small"
     >
       <template #header>
         <div class="flex justify-between">

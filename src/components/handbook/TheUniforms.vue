@@ -96,6 +96,7 @@ const clearUniformData = () => {
       selectionMode="single"
       :value="uniformsStore.uniforms"
       tableStyle="min-width: 50rem"
+      size="small"
     >
       <template #header>
         <div class="flex justify-between">

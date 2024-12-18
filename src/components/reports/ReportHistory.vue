@@ -13,6 +13,7 @@ const reportStore = useReportStore();
     tableStyle="min-width: 50rem"
     paginator
     :rows="5"
+    size="small"
   >
     <Column field="filename" header="Назва файлу"></Column>
     <Column field="created_at" header="Дата створення">

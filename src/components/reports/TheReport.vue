@@ -12,7 +12,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <DataTable class="mt-5 w-full" :value="reportStore.reportData" tableStyle="min-width: 50rem">
+  <DataTable class="mt-5 w-full" :value="reportStore.reportData" selectionMode="single" tableStyle="min-width: 50rem" size="small">
     <Column field="department" header="Найменування цеху, відділу"></Column>
     <Column field="weight" header="Вага, Кг"></Column>
     <template v-for="(abstergent, index) in reportStore.abstergents" :key="index">
