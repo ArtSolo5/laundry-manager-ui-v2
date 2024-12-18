@@ -23,7 +23,7 @@ app.use(createPinia());
 
 router.beforeEach((to) => {
   const authStore = useAuthStore();
-  if (!authStore.isAuth() && to.path !== '/login') return '/login'
+  if (!authStore.isAuth() && to.path !== '/login') return '/login';
 });
 
 app.use(router);

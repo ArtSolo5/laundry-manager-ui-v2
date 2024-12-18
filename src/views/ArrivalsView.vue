@@ -21,10 +21,10 @@ const tabs = [
     title: 'Засоби',
     value: 'absTab',
     permissions: permissions.abstergents,
-  }
+  },
 ];
 
-const allowedTabs = computed(() => tabs.filter(t => authStore.isAllowed(t.permissions)));
+const allowedTabs = computed(() => tabs.filter((t) => authStore.isAllowed(t.permissions)));
 
 onMounted(async () => {
   if (!washDaysStore.day) await washDaysStore.loadWashDay();
@@ -47,11 +47,9 @@ onMounted(async () => {
 
     <Tabs :value="allowedTabs[0].value">
       <TabList>
-        <Tab
-          v-for="(tab, index) in allowedTabs"
-          :key="index"
-          :value="tab.value"
-        >{{ tab.title }}</Tab>
+        <Tab v-for="(tab, index) in allowedTabs" :key="index" :value="tab.value">{{
+          tab.title
+        }}</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="depTab">

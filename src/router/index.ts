@@ -28,7 +28,7 @@ const router = createRouter({
       beforeEnter: () => {
         const authStore = useAuthStore();
         return authStore.isAllowed(permissions.arrivals);
-      }
+      },
     },
     {
       path: '/washes',
@@ -37,7 +37,7 @@ const router = createRouter({
       beforeEnter: () => {
         const authStore = useAuthStore();
         if (!authStore.isAllowed(permissions.washes)) window.location.replace('/');
-      }
+      },
     },
     {
       path: '/report',
@@ -46,7 +46,7 @@ const router = createRouter({
       beforeEnter: () => {
         const authStore = useAuthStore();
         if (!authStore.isAllowed(permissions.reports)) window.location.replace('/');
-      }
+      },
     },
     {
       path: '/handbook',
@@ -55,7 +55,7 @@ const router = createRouter({
       beforeEnter: () => {
         const authStore = useAuthStore();
         if (!authStore.isAllowed(permissions.handbook)) window.location.replace('/');
-      }
+      },
     },
   ],
 });

@@ -8,9 +8,9 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useAuthStore = defineStore('auth', () => {
   const toast = useToast();
-  
+
   const toastStore = useToastStore();
-  
+
   const user: Ref<User | null> = ref(null);
 
   const login = async (data: LoginPayload) => {
@@ -46,7 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
         summary: 'Помилка авторизацїї!',
         detail: 'Перевірте дані для входу.',
         life: 3000,
-        group: 'login-errors'
+        group: 'login-errors',
       });
     } else {
       toastStore.showServerErrorToast('login-errors');

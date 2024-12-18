@@ -256,6 +256,6 @@ onMounted(async () => {
       </div>
     </Dialog>
 
-    <Toast group="abstergent-arrivals-errors" position="top-center"/>
+    <Toast group="abstergent-arrivals-errors" position="top-center" />
   </div>
 </template>

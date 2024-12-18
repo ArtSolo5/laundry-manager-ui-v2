@@ -132,8 +132,6 @@ export const useAbsArrivalsStore = defineStore('abstergent-arrivals', () => {
     return String(s);
   });
 
-  
-
   return {
     arrivals,
     loadArrivals,

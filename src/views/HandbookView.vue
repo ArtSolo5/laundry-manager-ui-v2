@@ -30,10 +30,10 @@ const tabs = [
     title: 'Одяг',
     value: 'uniformsTab',
     permissions: permissions.uniforms,
-  }
+  },
 ];
 
-const allowedTabs = computed(() => tabs.filter(t => authStore.isAllowed(t.permissions)));
+const allowedTabs = computed(() => tabs.filter((t) => authStore.isAllowed(t.permissions)));
 </script>
 
 <template>
@@ -42,11 +42,9 @@ const allowedTabs = computed(() => tabs.filter(t => authStore.isAllowed(t.permis
 
     <Tabs :value="allowedTabs[0].value">
       <TabList>
-        <Tab
-          v-for="(tab, index) in allowedTabs"
-          :key="index"
-          :value="tab.value"
-        >{{ tab.title }}</Tab>
+        <Tab v-for="(tab, index) in allowedTabs" :key="index" :value="tab.value">{{
+          tab.title
+        }}</Tab>
       </TabList>
       <TabPanels>
         <TabPanel v-if="authStore.isAllowed(permissions.programs)" value="programsTab">

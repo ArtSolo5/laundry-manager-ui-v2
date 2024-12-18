@@ -12,7 +12,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <DataTable class="mt-5 w-full" :value="reportStore.reportData" selectionMode="single" tableStyle="min-width: 50rem" size="small">
+  <DataTable
+    class="mt-5 w-full"
+    :value="reportStore.reportData"
+    selectionMode="single"
+    tableStyle="min-width: 50rem"
+    size="small"
+  >
     <Column field="department" header="Найменування цеху, відділу"></Column>
     <Column field="weight" header="Вага, Кг"></Column>
     <template v-for="(abstergent, index) in reportStore.abstergents" :key="index">
@@ -25,5 +31,5 @@ onMounted(async () => {
     <Column field="sum" header="Всього, Мл"></Column>
   </DataTable>
 
-  <Toast group="report-errors" position="top-center"/>
+  <Toast group="report-errors" position="top-center" />
 </template>

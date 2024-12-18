@@ -54,7 +54,7 @@ onMounted(() => {
       </div>
     </form>
 
-    <Toast group="login-errors" position="top-center"/>
+    <Toast group="login-errors" position="top-center" />
   </section>
 </template>
 

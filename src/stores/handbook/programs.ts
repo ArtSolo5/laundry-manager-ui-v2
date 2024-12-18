@@ -91,7 +91,7 @@ export const useProgramsStore = defineStore('programs', () => {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
     } else if (response.status === 403) {
-      toastStore.showForbiddenToast(TOAST_GROUP); 
+      toastStore.showForbiddenToast(TOAST_GROUP);
     } else {
       toastStore.showServerErrorToast(TOAST_GROUP);
     }
