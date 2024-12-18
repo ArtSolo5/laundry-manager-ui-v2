@@ -9,6 +9,8 @@ import { definePreset } from '@primevue/themes';
 import { palette } from '@primevue/themes';
 import { uk } from 'primelocale/uk.json';
 import { useAuthStore } from './stores/auth';
+import ToastService from 'primevue/toastservice';
+
 const app = createApp(App);
 
 const customPreset = definePreset(Aura, {
@@ -42,5 +44,6 @@ app.use(PrimeVue, {
     },
   },
 });
+app.use(ToastService);
 
 app.mount('#app');

@@ -3,11 +3,15 @@ import { ref, type Ref } from 'vue';
 import { useAuthStore } from '../auth';
 import type { Abstergent } from './abstergents';
 import type { Uniform } from './uniforms';
+import { useToastStore } from '../toast';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useProgramsStore = defineStore('programs', () => {
+  const TOAST_GROUP = 'programs-errors';
+
   const auth = useAuthStore();
+  const toastStore = useToastStore();
 
   const programs: Ref<Program[]> = ref([]);
 
@@ -50,19 +54,16 @@ export const useProgramsStore = defineStore('programs', () => {
     if (response.status === 201) {
       await loadPrograms();
       createValidationErrors.value = [];
-    }
-
-    if (response.status === 400) {
+    } else if (response.status === 400) {
       createValidationErrors.value = (await response.json()).message;
-      throw new Error('Validation error');
-    }
-
-    if (response.status === 401) {
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   const updateProgram = async (payload: Program) => {
@@ -84,19 +85,16 @@ export const useProgramsStore = defineStore('programs', () => {
     if (response.status === 200) {
       await loadPrograms();
       updateValidationErrors.value = [];
-    }
-
-    if (response.status === 400) {
+    } else if (response.status === 400) {
       updateValidationErrors.value = (await response.json()).message;
-      throw new Error('Validation error');
-    }
-
-    if (response.status === 401) {
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP); 
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   const removeProgram = async (programId: number) => {
@@ -108,14 +106,16 @@ export const useProgramsStore = defineStore('programs', () => {
       },
     });
 
-    if (response.status === 200) await loadPrograms();
-
-    if (response.status === 401) {
+    if (response.status === 200) {
+      await loadPrograms();
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   return {

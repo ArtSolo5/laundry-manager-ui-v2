@@ -10,6 +10,7 @@ import {
   Button,
   Message,
   Select,
+  Toast,
 } from 'primevue';
 import { onMounted, ref, type Ref } from 'vue';
 import { useProgramsStore } from '@/stores/handbook/programs';
@@ -252,5 +253,7 @@ onMounted(async () => {
         <Button type="button" label="Підтвердити" severity="danger" @click="remove()"></Button>
       </div>
     </Dialog>
+
+    <Toast group="washes-errors" position="top-center"/>
   </div>
 </template>

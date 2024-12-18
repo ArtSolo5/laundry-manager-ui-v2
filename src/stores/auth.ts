@@ -1,12 +1,17 @@
 import { jwtDecode } from 'jwt-decode';
 import { acceptHMRUpdate, defineStore } from 'pinia';
+import { useToast } from 'primevue';
 import { ref, type Ref } from 'vue';
+import { useToastStore } from './toast';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useAuthStore = defineStore('auth', () => {
+  const toast = useToast();
+  
+  const toastStore = useToastStore();
+  
   const user: Ref<User | null> = ref(null);
-  const authError: Ref<boolean> = ref(false);
 
   const login = async (data: LoginPayload) => {
     const response = await fetch(`${apiUrl}/auth/login`, {
@@ -20,22 +25,32 @@ export const useAuthStore = defineStore('auth', () => {
       }),
     });
 
-    if (response.status !== 201) return (authError.value = true);
+    if (response.status === 201) {
+      const token = (await response.json()).access_token;
 
-    const token = (await response.json()).access_token;
+      document.cookie = `access_token=${token}`;
 
-    document.cookie = `access_token=${token}`;
+      if (data.rememberMe) {
+        localStorage.setItem(
+          'credentials',
+          JSON.stringify({ username: data.username.trim(), password: data.password.trim() }),
+        );
+      } else {
+        localStorage.removeItem('credentials');
+      }
 
-    if (data.rememberMe) {
-      localStorage.setItem(
-        'credentials',
-        JSON.stringify({ username: data.username.trim(), password: data.password.trim() }),
-      );
+      window.location.replace('/');
+    } else if (response.status === 401) {
+      toast.add({
+        severity: 'error',
+        summary: 'Помилка авторизацїї!',
+        detail: 'Перевірте дані для входу.',
+        life: 3000,
+        group: 'login-errors'
+      });
     } else {
-      localStorage.removeItem('credentials');
+      toastStore.showServerErrorToast('login-errors');
     }
-
-    return window.location.replace('/');
   };
 
   const logout = () => {
@@ -98,7 +113,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     user,
-    authError,
     login,
     logout,
     getCookie,

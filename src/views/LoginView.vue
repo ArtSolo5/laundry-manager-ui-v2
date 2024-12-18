@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { Button, InputText, Password, FloatLabel, ToggleSwitch, Message } from 'primevue';
+import { Button, InputText, Password, FloatLabel, ToggleSwitch, Toast } from 'primevue';
 import DarkLogo from '@/components/icons/DarkLogo.vue';
 import { useAuthStore } from '@/stores/auth';
 
@@ -52,11 +52,9 @@ onMounted(() => {
       <div class="flex justify-center">
         <Button type="submit" label="Увійти" rounded class="px-5" />
       </div>
-
-      <Message severity="error" icon="pi pi-times-circle" v-if="auth.authError"
-        >Помилка авторизації!</Message
-      >
     </form>
+
+    <Toast group="login-errors" position="top-center"/>
   </section>
 </template>
 

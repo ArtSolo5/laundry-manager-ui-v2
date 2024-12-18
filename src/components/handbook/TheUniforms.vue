@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUniformsStore, type Uniform } from '@/stores/handbook/uniforms';
-import { DataTable, Column, Dialog, InputText, Button, Message } from 'primevue';
+import { DataTable, Column, Dialog, InputText, Button, Message, Toast } from 'primevue';
 import { onMounted, ref, type Ref } from 'vue';
 
 const uniformsStore = useUniformsStore();
@@ -222,5 +222,7 @@ onMounted(async () => {
         <Button type="button" label="Підтвердити" severity="danger" @click="remove()"></Button>
       </div>
     </Dialog>
+
+    <Toast group="uniforms-errors" position="top-center"/>
   </div>
 </template>

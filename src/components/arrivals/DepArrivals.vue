@@ -10,6 +10,7 @@ import {
   Button,
   Message,
   Select,
+  Toast
 } from 'primevue';
 import { onMounted, ref, type Ref } from 'vue';
 import { useDepartmentsStore } from '@/stores/handbook/departments';
@@ -256,5 +257,7 @@ onMounted(async () => {
         <Button type="button" label="Підтвердити" severity="danger" @click="remove()"></Button>
       </div>
     </Dialog>
+
+    <Toast group="department-arrivals-errors" position="top-center"/>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDepartmentsStore, type Department } from '@/stores/handbook/departments';
-import { DataTable, Column, Dialog, InputText, Button, Message } from 'primevue';
+import { DataTable, Column, Dialog, InputText, Button, Message, Toast } from 'primevue';
 import { onMounted, ref, type Ref } from 'vue';
 
 const departmentsStore = useDepartmentsStore();
@@ -222,5 +222,7 @@ onMounted(async () => {
         <Button type="button" label="Підтвердити" severity="danger" @click="remove()"></Button>
       </div>
     </Dialog>
+
+    <Toast group="departments-errors" position="top-center"/>
   </div>
 </template>

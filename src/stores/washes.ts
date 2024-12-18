@@ -3,12 +3,16 @@ import { acceptHMRUpdate, defineStore } from 'pinia';
 import { useAuthStore } from './auth';
 import { computed, ref, type Ref } from 'vue';
 import { useWashDaysStore } from './wash-days';
+import { useToastStore } from './toast';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useWashesStore = defineStore('washes', () => {
+  const TOAST_GROUP = 'washes-errors';
+
   const auth = useAuthStore();
   const washDays = useWashDaysStore();
+  const toastStore = useToastStore();
 
   const washes: Ref<Wash[]> = ref([]);
 
@@ -56,19 +60,16 @@ export const useWashesStore = defineStore('washes', () => {
       await washDays.loadWashDay();
       await loadWashes();
       createValidationErrors.value = [];
-    }
-
-    if (response.status === 400) {
+    } else if (response.status === 400) {
       createValidationErrors.value = (await response.json()).message;
-      throw new Error('Validation error');
-    }
-
-    if (response.status === 401) {
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   const updateWash = async (payload: WashPaylod) => {
@@ -89,19 +90,16 @@ export const useWashesStore = defineStore('washes', () => {
       await washDays.loadWashDay();
       await loadWashes();
       updateValidationErrors.value = [];
-    }
-
-    if (response.status === 400) {
+    } else if (response.status === 400) {
       updateValidationErrors.value = (await response.json()).message;
-      throw new Error('Validation error');
-    }
-
-    if (response.status === 401) {
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   const removeWash = async (washId: number) => {
@@ -116,14 +114,14 @@ export const useWashesStore = defineStore('washes', () => {
     if (response.status === 200) {
       await washDays.loadWashDay();
       await loadWashes();
-    }
-
-    if (response.status === 401) {
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   const sumWeight = computed(() => {

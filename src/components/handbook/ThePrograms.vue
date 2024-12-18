@@ -12,6 +12,7 @@ import {
   Select,
   ToggleSwitch,
   Divider,
+  Toast,
 } from 'primevue';
 import { onMounted, ref, type Ref } from 'vue';
 
@@ -392,5 +393,7 @@ onMounted(async () => {
         <Button type="button" label="Підтвердити" severity="danger" @click="remove()"></Button>
       </div>
     </Dialog>
+
+    <Toast group="programs-errors" position="top-center"/>
   </div>
 </template>

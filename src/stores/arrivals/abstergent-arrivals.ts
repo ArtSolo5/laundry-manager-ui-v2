@@ -4,12 +4,16 @@ import { useAuthStore } from '../auth';
 import { computed, ref, type Ref } from 'vue';
 import { useWashDaysStore } from '../wash-days';
 import type { Abstergent } from '../handbook/abstergents';
+import { useToastStore } from '../toast';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useAbsArrivalsStore = defineStore('abstergent-arrivals', () => {
+  const TOAST_GROUP = 'abstergent-arrivals-errors';
+
   const auth = useAuthStore();
   const washDays = useWashDaysStore();
+  const toastStore = useToastStore();
 
   const arrivals: Ref<Arrival[]> = ref([]);
 
@@ -56,19 +60,16 @@ export const useAbsArrivalsStore = defineStore('abstergent-arrivals', () => {
     if (response.status === 201) {
       await loadArrivals();
       createValidationErrors.value = [];
-    }
-
-    if (response.status === 400) {
+    } else if (response.status === 400) {
       createValidationErrors.value = (await response.json()).message;
-      throw new Error('Validation error');
-    }
-
-    if (response.status === 401) {
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   const updateArrival = async (payload: AbsArrival) => {
@@ -88,19 +89,16 @@ export const useAbsArrivalsStore = defineStore('abstergent-arrivals', () => {
     if (response.status === 200) {
       await loadArrivals();
       updateValidationErrors.value = [];
-    }
-
-    if (response.status === 400) {
+    } else if (response.status === 400) {
       updateValidationErrors.value = (await response.json()).message;
-      throw new Error('Validation error');
-    }
-
-    if (response.status === 401) {
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   const removeArrival = async (arrId: number) => {
@@ -112,14 +110,16 @@ export const useAbsArrivalsStore = defineStore('abstergent-arrivals', () => {
       },
     });
 
-    if (response.status === 200) await loadArrivals();
-
-    if (response.status === 401) {
+    if (response.status === 200) {
+      await loadArrivals();
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   const sumVolume = computed(() => {
@@ -131,6 +131,8 @@ export const useAbsArrivalsStore = defineStore('abstergent-arrivals', () => {
 
     return String(s);
   });
+
+  
 
   return {
     arrivals,

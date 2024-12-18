@@ -1,11 +1,15 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { ref, type Ref } from 'vue';
 import { useAuthStore } from '../auth';
+import { useToastStore } from '../toast';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useUniformsStore = defineStore('uniforms', () => {
+  const TOAST_GROUP = 'uniforms-errors';
+
   const auth = useAuthStore();
+  const toastStore = useToastStore();
 
   const uniforms: Ref<Uniform[]> = ref([]);
 
@@ -44,19 +48,16 @@ export const useUniformsStore = defineStore('uniforms', () => {
     if (response.status === 201) {
       await loadUniforms();
       createValidationErrors.value = [];
-    }
-
-    if (response.status === 400) {
+    } else if (response.status === 400) {
       createValidationErrors.value = (await response.json()).message;
-      throw new Error('Validation error');
-    }
-
-    if (response.status === 401) {
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   const updateUniform = async (payload: Uniform) => {
@@ -74,19 +75,16 @@ export const useUniformsStore = defineStore('uniforms', () => {
     if (response.status === 200) {
       await loadUniforms();
       updateValidationErrors.value = [];
-    }
-
-    if (response.status === 400) {
+    } else if (response.status === 400) {
       updateValidationErrors.value = (await response.json()).message;
-      throw new Error('Validation error');
-    }
-
-    if (response.status === 401) {
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   const removeUniform = async (depId: number) => {
@@ -98,14 +96,16 @@ export const useUniformsStore = defineStore('uniforms', () => {
       },
     });
 
-    if (response.status === 200) await loadUniforms();
-
-    if (response.status === 401) {
+    if (response.status === 200) {
+      await loadUniforms();
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   return {

@@ -1,11 +1,15 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { ref, type Ref } from 'vue';
 import { useAuthStore } from '../auth';
+import { useToastStore } from '../toast';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const useAbstergentsStore = defineStore('abstergents', () => {
+  const TOAST_GROUP = 'abstergents-errors';
+
   const auth = useAuthStore();
+  const toastStore = useToastStore();
 
   const abstergents: Ref<Abstergent[]> = ref([]);
 
@@ -44,19 +48,16 @@ export const useAbstergentsStore = defineStore('abstergents', () => {
     if (response.status === 201) {
       await loadAbstergents();
       createValidationErrors.value = [];
-    }
-
-    if (response.status === 400) {
+    } else if (response.status === 400) {
       createValidationErrors.value = (await response.json()).message;
-      throw new Error('Validation error');
-    }
-
-    if (response.status === 401) {
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   const updateAbstergent = async (payload: Abstergent) => {
@@ -74,19 +75,16 @@ export const useAbstergentsStore = defineStore('abstergents', () => {
     if (response.status === 200) {
       await loadAbstergents();
       updateValidationErrors.value = [];
-    }
-
-    if (response.status === 400) {
+    } else if (response.status === 400) {
       updateValidationErrors.value = (await response.json()).message;
-      throw new Error('Validation error');
-    }
-
-    if (response.status === 401) {
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   const removeAbstergent = async (absId: number) => {
@@ -98,14 +96,16 @@ export const useAbstergentsStore = defineStore('abstergents', () => {
       },
     });
 
-    if (response.status === 200) await loadAbstergents();
-
-    if (response.status === 401) {
+    if (response.status === 200) {
+      await loadAbstergents();
+    } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
+    } else if (response.status === 403) {
+      toastStore.showForbiddenToast(TOAST_GROUP);
+    } else {
+      toastStore.showServerErrorToast(TOAST_GROUP);
     }
-
-    if (response.status === 403) throw new Error('Auth error');
   };
 
   return {

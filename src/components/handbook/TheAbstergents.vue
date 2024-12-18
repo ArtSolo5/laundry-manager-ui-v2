@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAbstergentsStore, type Abstergent } from '@/stores/handbook/abstergents';
-import { DataTable, Column, Dialog, InputText, Button, Message } from 'primevue';
+import { DataTable, Column, Dialog, InputText, Button, Message, Toast } from 'primevue';
 import { onMounted, ref, type Ref } from 'vue';
 
 const abstergentsStore = useAbstergentsStore();
@@ -227,5 +227,7 @@ onMounted(async () => {
         <Button type="button" label="Підтвердити" severity="danger" @click="remove()"></Button>
       </div>
     </Dialog>
+
+    <Toast group="abstergents-errors" position="top-center"/>
   </div>
 </template>
