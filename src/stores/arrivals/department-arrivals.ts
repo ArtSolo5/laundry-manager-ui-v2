@@ -62,6 +62,7 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
       createValidationErrors.value = [];
     } else if (response.status === 400) {
       createValidationErrors.value = (await response.json()).message;
+      throw new Error('Validation error.');
     } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
@@ -92,6 +93,7 @@ export const useDepArrivalsStore = defineStore('department-arrivals', () => {
       updateValidationErrors.value = [];
     } else if (response.status === 400) {
       updateValidationErrors.value = (await response.json()).message;
+      throw new Error('Validation error.');
     } else if (response.status === 401) {
       auth.deleteCookie('access_token');
       window.location.replace('/login');
