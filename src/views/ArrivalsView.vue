@@ -2,15 +2,33 @@
 import DatePicker from 'primevue/datepicker';
 import { useDepArrivalsStore } from '@/stores/arrivals/department-arrivals';
 import { useWashDaysStore } from '@/stores/wash-days';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import DepArrivals from '@/components/arrivals/DepArrivals.vue';
 import { Tabs, TabList, Tab, TabPanel, TabPanels } from 'primevue';
 import AbsArrivals from '@/components/arrivals/AbsArrivals.vue';
 import { useAbsArrivalsStore } from '@/stores/arrivals/abstergent-arrivals';
+import permissions from '@/permissions/arrivals';
+import { useAuthStore } from '@/stores/auth';
 
 const depArrivalsStore = useDepArrivalsStore();
 const absArrivalsStore = useAbsArrivalsStore();
 const washDaysStore = useWashDaysStore();
+const authStore = useAuthStore();
+
+const tabs = [
+  {
+    title: 'Одяг',
+    value: 'depTab',
+    permissions: permissions.uniforms,
+  },
+  {
+    title: 'Засоби',
+    value: 'absTab',
+    permissions: permissions.abstergents,
+  }
+];
+
+const allowedTabs = computed(() => tabs.filter(t => authStore.isAllowed(t.permissions)));
 
 onMounted(async () => {
   if (!washDaysStore.day) await washDaysStore.loadWashDay();
@@ -33,10 +51,13 @@ onMounted(async () => {
       :manualInput="false"
     />
 
-    <Tabs value="depTab">
+    <Tabs :value="allowedTabs[0].value">
       <TabList>
-        <Tab value="depTab">Одяг</Tab>
-        <Tab value="absTab">Засоби</Tab>
+        <Tab
+          v-for="(tab, index) in allowedTabs"
+          :key="index"
+          :value="tab.value"
+        >{{ tab.title }}</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="depTab">
