@@ -7,6 +7,7 @@ import ReportView from '@/views/ReportView.vue';
 import HandbookView from '@/views/HandbookView.vue';
 import { useAuthStore } from '@/stores/auth';
 import permissions from '@/permissions/sidebar';
+import PurchasesView from '@/views/PurchasesView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +57,11 @@ const router = createRouter({
         const authStore = useAuthStore();
         if (!authStore.isAllowed(permissions.handbook)) window.location.replace('/');
       },
+    },
+    {
+      path: '/purchases',
+      name: 'purchases',
+      component: PurchasesView,
     },
   ],
 });

@@ -42,6 +42,12 @@ const items: MenuItem[] = [
     route: '/handbook',
     permissions: permissions.handbook,
   },
+  {
+    label: 'Закупівлі',
+    icon: PrimeIcons.SHOPPING_CART,
+    route: '/purchases',
+    permissions: [],
+  },
 ];
 
 const allowedMunuItems = computed(() => {
